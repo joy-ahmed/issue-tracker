@@ -14,12 +14,13 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import "easymde/dist/easymde.min.css";
 import { schema } from "@/app/validationSchema";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type IssueForm =z.infer<typeof schema>;
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const { handleSubmit, register, control, formState: { touchedFields, errors } } = useForm<IssueForm>({
+  const { handleSubmit, register, control, formState: { errors } } = useForm<IssueForm>({
     resolver: zodResolver(schema),
   });
   const formSubmit = async (data: IssueForm) => {
@@ -53,9 +54,7 @@ const NewIssuePage = () => {
           id="title"
           placeholder="what is the issue?"
         />
-        {errors.title && touchedFields.title && (
-          <p className="text-red-500 text-sm">{errors.title.message}</p>
-        )}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         
         <Label htmlFor="message">Define the issue:</Label>
 
@@ -69,9 +68,7 @@ const NewIssuePage = () => {
             />
           )}
         />
-        {errors.description && touchedFields.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
-        )}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button className="bg-emerald-500 hover:bg-emerald-600">Submit</Button>
       </form>
     </div>
