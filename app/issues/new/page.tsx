@@ -1,19 +1,68 @@
-'use client';
+"use client";
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { AlertCircle } from "lucide-react";
+import SimpleMDE from "react-simplemde-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SimpleMDE from "react-simplemde-editor";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import "easymde/dist/easymde.min.css";
 
+interface IssueForm {
+  title: string;
+  description: string;
+}
+
 const NewIssuePage = () => {
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const { handleSubmit, register, control } = useForm<IssueForm>();
+  const formSubmit = async (data: IssueForm) => {
+    try {
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setError("An unexpected error occurred.");
+    }
+  };
   return (
-    <div className="p-5 max-w-xl mx-auto">
+    <div className="p-5 max-w-3xl mx-auto">
       <h1 className="text-3xl font-semibold text-center mb-5">Add New Issue</h1>
-      <form className="grid w-full items-center gap-2">
+      {error && (
+        <Alert variant="destructive" className="mb-5">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {error}
+          </AlertDescription>
+        </Alert>
+      )}
+      <form
+        onSubmit={handleSubmit(formSubmit)}
+        className="grid w-full items-center gap-2"
+      >
         <Label htmlFor="title">Title</Label>
-        <Input type="text" id="title" placeholder="what is the issue?" />
+        <Input
+          {...register("title")}
+          type="text"
+          id="title"
+          placeholder="what is the issue?"
+        />
         <Label htmlFor="message">Define the issue:</Label>
-        <SimpleMDE placeholder="Type your issues details here." />
+
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <SimpleMDE
+              {...field}
+              placeholder="Type your issues details here."
+            />
+          )}
+        />
         <Button className="bg-emerald-500 hover:bg-emerald-600">Submit</Button>
       </form>
     </div>
