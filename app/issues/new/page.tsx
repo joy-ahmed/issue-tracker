@@ -1,25 +1,27 @@
 "use client";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { AlertCircle } from "lucide-react";
 import SimpleMDE from "react-simplemde-editor";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import "easymde/dist/easymde.min.css";
+import { schema } from "@/app/validationSchema";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
-
+type IssueForm =z.infer<typeof schema>;
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const { handleSubmit, register, control } = useForm<IssueForm>();
+  const { handleSubmit, register, control, formState: { touchedFields, errors } } = useForm<IssueForm>({
+    resolver: zodResolver(schema),
+  });
   const formSubmit = async (data: IssueForm) => {
     try {
       await axios.post("/api/issues", data);
@@ -51,6 +53,10 @@ const NewIssuePage = () => {
           id="title"
           placeholder="what is the issue?"
         />
+        {errors.title && touchedFields.title && (
+          <p className="text-red-500 text-sm">{errors.title.message}</p>
+        )}
+        
         <Label htmlFor="message">Define the issue:</Label>
 
         <Controller
@@ -63,6 +69,9 @@ const NewIssuePage = () => {
             />
           )}
         />
+        {errors.description && touchedFields.description && (
+          <p className="text-red-500 text-sm">{errors.description.message}</p>
+        )}
         <Button className="bg-emerald-500 hover:bg-emerald-600">Submit</Button>
       </form>
     </div>
