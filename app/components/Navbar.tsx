@@ -11,7 +11,7 @@ const Navbar = () => {
   ];
   const pathname = usePathname();
   return (
-    <nav className="flex space-x-6 border-b px-5 h-16 items-center">
+    <nav className="flex space-x-6 border-b px-5 h-16 items-center mb-5">
       <Link href="/">
         <TiFlowSwitch size={36} className="text-emerald-500" />
       </Link>
