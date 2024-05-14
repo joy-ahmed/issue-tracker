@@ -1,7 +1,9 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 const NewIssuePage = () => {
   return (
@@ -11,7 +13,7 @@ const NewIssuePage = () => {
         <Label htmlFor="title">Title</Label>
         <Input type="text" id="title" placeholder="what is the issue?" />
         <Label htmlFor="message">Define the issue:</Label>
-        <Textarea placeholder="Type your issues details here." id="message" />
+        <SimpleMDE placeholder="Type your issues details here." />
         <Button className="bg-emerald-500 hover:bg-emerald-600">Submit</Button>
       </form>
     </div>
