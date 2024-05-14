@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, LoaderCircle } from "lucide-react";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
@@ -16,18 +16,26 @@ import "easymde/dist/easymde.min.css";
 import { schema } from "@/app/validationSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
 
-type IssueForm =z.infer<typeof schema>;
+type IssueForm = z.infer<typeof schema>;
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const { handleSubmit, register, control, formState: { errors } } = useForm<IssueForm>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+  } = useForm<IssueForm>({
     resolver: zodResolver(schema),
   });
   const formSubmit = async (data: IssueForm) => {
     try {
+      setIsSubmitting(true);
       await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
+      setIsSubmitting(false);
       setError("An unexpected error occurred.");
     }
   };
@@ -38,9 +46,7 @@ const NewIssuePage = () => {
         <Alert variant="destructive" className="mb-5">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            {error}
-          </AlertDescription>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
       <form
@@ -55,7 +61,7 @@ const NewIssuePage = () => {
           placeholder="what is the issue?"
         />
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
-        
+
         <Label htmlFor="message">Define the issue:</Label>
 
         <Controller
@@ -69,7 +75,15 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button className="bg-emerald-500 hover:bg-emerald-600">Submit</Button>
+        <Button disabled={isSubmitting} className="bg-emerald-500 hover:bg-emerald-600 font-medium">
+          Submit
+          {isSubmitting && (
+            <>
+              ing
+              <LoaderCircle className="w-5 h-5 ml-2 animate-spin duration-700" />
+            </>
+          )}
+        </Button>
       </form>
     </div>
   );
