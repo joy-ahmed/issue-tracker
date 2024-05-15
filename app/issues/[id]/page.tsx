@@ -5,6 +5,9 @@ import ReactMarkdown from "react-markdown";
 
 
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Edit } from "lucide-react";
 
 interface Props {
   params: { id: string };
@@ -19,8 +22,8 @@ const IssueDetailsPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <div className="container mx-auto">
-      <div className="border p-4 rounded">
+    <div className="container mx-auto flex flex-col md:flex-row gap-5 justify-between">
+      <div className="border p-4 rounded flex-grow">
         <div>
           <h1 className="text-3xl font-semibold">{issue.title}</h1>
           <div className="flex items-center space-x-2 my-2">
@@ -36,6 +39,14 @@ const IssueDetailsPage = async ({ params }: Props) => {
             {issue.description}
           </ReactMarkdown>
         </div>
+      </div>
+      <div className="">
+        <Link href="#">
+          <Button className="bg-emerald-500 hover:bg-emerald-600">
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Issue
+          </Button>
+        </Link>
       </div>
     </div>
   );
