@@ -3,11 +3,8 @@ import { notFound } from "next/navigation";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
-
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Edit } from "lucide-react";
+import IssueEditButton from "./IssueEditButton";
 
 interface Props {
   params: { id: string };
@@ -35,19 +32,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
         </div>
         <hr className="py-2" />
         <div className="prose">
-          <ReactMarkdown>
-            {issue.description}
-          </ReactMarkdown>
+          <ReactMarkdown>{issue.description}</ReactMarkdown>
         </div>
       </div>
-      <div className="">
-        <Link href="#">
-          <Button className="bg-emerald-500 hover:bg-emerald-600">
-            <Edit className="w-4 h-4 mr-2" />
-            Edit Issue
-          </Button>
-        </Link>
-      </div>
+      <IssueEditButton issueId={issue.id} />
     </div>
   );
 };
