@@ -1,22 +1,21 @@
 "use client";
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { AlertCircle, LoaderCircle } from "lucide-react";
-import dynamic from "next/dynamic";
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
+import ErrorMessage from "@/app/components/ErrorMessage";
+import { schema } from "@/app/validationSchema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import "easymde/dist/easymde.min.css";
-import { schema } from "@/app/validationSchema";
-import ErrorMessage from "@/app/components/ErrorMessage";
 import { Issue } from "@prisma/client";
+import "easymde/dist/easymde.min.css";
 
 type IssueFormData = z.infer<typeof schema>;
 
