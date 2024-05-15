@@ -1,9 +1,8 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import delay from "delay";
 
-import { Skeleton } from "@/components/ui/skeleton"
+
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -19,7 +18,6 @@ import IssueStatusBadge from "../components/IssueStatusBadge";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
- await delay(2000)
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-end mb-5">
