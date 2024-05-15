@@ -19,7 +19,7 @@ import IssueStatusBadge from "../components/IssueStatusBadge";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
- await delay(5000)
+ await delay(2000)
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-end mb-5">
