@@ -7,7 +7,7 @@ import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import IssueEditButton from "./IssueEditButton";
 import IssueDeleteButton from "./IssueDeleteButton";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/auth/authOptions";
 
 interface Props {
   params: { id: string };
