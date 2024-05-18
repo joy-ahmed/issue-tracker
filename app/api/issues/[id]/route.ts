@@ -1,7 +1,9 @@
 import { schema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string }}) {
     const issue = await prisma.issue.findUnique({
@@ -13,6 +15,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string }}) {
+    const session = await getServerSession(authOptions);
+    if(!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const issue = await prisma.issue.findUnique({
         where: {
             id: params.id
@@ -37,6 +41,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string }}) {
+    const session = await getServerSession(authOptions);
+    if(!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const issue = await prisma.issue.findUnique({
         where: {
             id: params.id
