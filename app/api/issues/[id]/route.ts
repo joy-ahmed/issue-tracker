@@ -1,9 +1,10 @@
+import authOptions from "@/app/auth/authOptions";
 import { schema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
+
 
 export async function GET(request: NextRequest, { params }: { params: { id: string }}) {
     const issue = await prisma.issue.findUnique({
