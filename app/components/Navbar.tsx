@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { IoIosPower } from "react-icons/io";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
   const links = [
@@ -45,6 +47,7 @@ const Navbar = () => {
       </ul>
       </div>
       <div className="">
+        {status === 'loading' && <div> <Skeleton className="h-10 w-32" /> </div>}
         { status === 'authenticated' && (
         // <Link href="/api/auth/signout">Sign out</Link>
         <DropdownMenu>
@@ -73,7 +76,10 @@ const Navbar = () => {
       </DropdownMenuContent>
     </DropdownMenu>
         )}
-        { status === 'unauthenticated' && <Link href="/api/auth/signin">Sign in</Link> }
+        { status === 'unauthenticated' && (
+        <Link href="/api/auth/signin">
+          <Button className="bg-emerald-500 hover:bg-emerald-600">Sign in</Button>
+        </Link>) }
       </div>
     </nav>
   );
