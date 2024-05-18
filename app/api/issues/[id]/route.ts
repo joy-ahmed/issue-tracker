@@ -34,3 +34,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     })
     return NextResponse.json(updatedIssue, { status: 200 })
 }
+
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string }}) {
+    const issue = await prisma.issue.findUnique({
+        where: {
+            id: params.id
+        }
+    })
+    if (!issue) notFound();
+    const deleteIssue = await prisma.issue.delete({
+        where: {
+            id: params.id
+        }
+    })
+    return NextResponse.json(deleteIssue, { status: 200 })
+}

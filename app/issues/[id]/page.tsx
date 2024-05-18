@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import IssueEditButton from "./IssueEditButton";
+import IssueDeleteButton from "./IssueDeleteButton";
 
 interface Props {
   params: { id: string };
@@ -35,7 +36,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
           <ReactMarkdown>{issue.description}</ReactMarkdown>
         </div>
       </div>
-      <IssueEditButton issueId={issue.id} />
+      <div className="flex flex-col gap-2">
+        <IssueEditButton issueId={issue.id} />
+        <IssueDeleteButton issueId={issue.id} />
+      </div>
     </div>
   );
 };
