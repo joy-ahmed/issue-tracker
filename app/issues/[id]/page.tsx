@@ -6,12 +6,15 @@ import ReactMarkdown from "react-markdown";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import IssueEditButton from "./IssueEditButton";
 import IssueDeleteButton from "./IssueDeleteButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 interface Props {
   params: { id: string };
 }
 
 const IssueDetailsPage = async ({ params }: Props) => {
+  const session = await getServerSession(authOptions);
   const issue = await prisma.issue.findUnique({
     where: {
       id: params.id,
@@ -36,10 +39,12 @@ const IssueDetailsPage = async ({ params }: Props) => {
           <ReactMarkdown>{issue.description}</ReactMarkdown>
         </div>
       </div>
+      { session &&
       <div className="flex flex-col gap-2">
         <IssueEditButton issueId={issue.id} />
         <IssueDeleteButton issueId={issue.id} />
       </div>
+    }
     </div>
   );
 };
